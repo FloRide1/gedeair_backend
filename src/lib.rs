@@ -1,3 +1,4 @@
+pub mod cli;
 pub mod openapi;
 
 use axum::routing::get;

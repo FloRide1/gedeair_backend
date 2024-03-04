@@ -8,6 +8,8 @@ use tower_http::trace::TraceLayer;
 
 #[tokio::main]
 async fn main() {
+    // Update environnement variable from .env
+    dotenvy::dotenv().ok();
     let cli = Arguments::parse();
 
     let tracing_is_enable = !cli.disable_tracing;

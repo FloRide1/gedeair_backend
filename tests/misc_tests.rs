@@ -1,5 +1,5 @@
 use axum::{body::Body, extract::Request, http::StatusCode};
-use gedeair_backend::app;
+use gedeair_backend::{app, cli::Arguments};
 use http_body_util::BodyExt;
 use serde_json::{json, Value};
 use tower::util::ServiceExt;
@@ -63,4 +63,10 @@ async fn basic_swagger_test() {
 
     // Simple text for beeing sure that openapi is working, don't forget to bump version
     assert_eq!(*body.get("openapi").unwrap(), json!("3.0.3"));
+}
+
+#[test]
+fn verify_cli() {
+    use clap::CommandFactory;
+    Arguments::command().debug_assert()
 }

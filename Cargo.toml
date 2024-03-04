@@ -16,6 +16,7 @@ features = ["precommit-hook", "run-cargo-check", "run-cargo-clippy", "run-cargo-
 [dev-dependencies]
 tower = { version = "0.4.13" }
 http-body-util = { version = "0.1.0" }
+serde_json = { version = "1.0.114" }
 
 [dependencies]
 axum = { version = "0.7.4" }

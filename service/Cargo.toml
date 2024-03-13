@@ -1,0 +1,30 @@
+[package]
+name = "service"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "service"
+path = "src/lib.rs"
+
+[dependencies]
+entity = { path = "../entity" }
+
+[dependencies.sea-orm]
+version = "0.12.14"
+features = [
+    "debug-print",
+    "runtime-tokio-native-tls",
+    "sqlx-postgres",
+]
+
+[dev-dependencies]
+tokio = { version = "1.36.0", features = ["macros", "rt"] }
+
+[features]
+mock = ["sea-orm/sqlx-sqlite"]
+
+[[test]]
+name = "game_test"
+required-features = ["mock"]

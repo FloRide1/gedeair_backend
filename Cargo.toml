@@ -3,6 +3,9 @@ name = "gedeair_backend"
 version = "0.0.1"
 edition = "2021"
 
+[workspace]
+members = [".", "service", "entity", "migration"]
+
 # Enable high optimizations for dependencies:
 [profile.dev.package."*"]
 opt-level = 3
@@ -24,6 +27,9 @@ tokio = { version = "1.36.0", features = ["full"] }
 
 # Database
 sea-orm = { version = "0.12.14", features = ["sqlx-postgres", "runtime-tokio-rustls"] }
+migration = { path = "migration" }
+entity = { path = "entity" }
+service = { path = "service" }
 
 # Trace + Log
 tower-http = { version = "0.5.2", features = ["trace"] }

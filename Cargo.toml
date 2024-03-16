@@ -17,13 +17,15 @@ default-features = false
 features = ["precommit-hook", "run-cargo-check", "run-cargo-clippy", "run-cargo-fmt"]
 
 [dev-dependencies]
-tower = { version = "0.4.13" }
 http-body-util = { version = "0.1.0" }
 serde_json = { version = "1.0.114" }
 
 [dependencies]
 axum = { version = "0.7.4" }
 tokio = { version = "1.36.0", features = ["full"] }
+axum-oidc = { version = "0.3.0" }
+tower = { version = "0.4.13" }
+tower-sessions = { version = "0.11.0" }
 
 # Database
 sea-orm = { version = "0.12.14", features = ["sqlx-postgres", "runtime-tokio-rustls"] }

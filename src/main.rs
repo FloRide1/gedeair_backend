@@ -31,19 +31,20 @@ async fn main() {
     }
 
     let url: String;
-    if let Some(given_url) = cli.database_url {
+    if let Some(given_url) = cli.database_url.to_owned() {
         url = given_url;
     } else {
-        let username = cli.postgres_user;
+        let username = cli.postgres_user.to_owned();
         let password = cli
             .postgres_password
+            .to_owned()
             .expect("Password should be passed in order to connect to the database");
-        let host = cli.postgres_host;
-        let port = cli.postgres_port;
-        let database = cli.postgres_db;
+        let host = cli.postgres_host.to_owned();
+        let port = cli.postgres_port.to_owned();
+        let database = cli.postgres_db.to_owned();
         url = format!("postgres://{username}:{password}@{host}:{port}/{database}");
     }
-    let db = get_database_conn(&url, cli.postgres_schema)
+    let db = get_database_conn(&url, cli.postgres_schema.to_owned())
         .await
         .expect("Couldn't connect to the database");
 
@@ -51,7 +52,7 @@ async fn main() {
         .await
         .expect("Migration couldn't proceed correctly");
 
-    let app = app().layer(TraceLayer::new_for_http());
+    let app = app(&cli).await.layer(TraceLayer::new_for_http());
 
     let address: SocketAddr = cli.address.parse().expect(
         &format!(

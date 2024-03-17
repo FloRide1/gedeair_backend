@@ -52,7 +52,7 @@ async fn main() {
         .await
         .expect("Migration couldn't proceed correctly");
 
-    let app = app(&cli).await.layer(TraceLayer::new_for_http());
+    let app = app(db, cli.clone()).await.layer(TraceLayer::new_for_http());
 
     let address: SocketAddr = cli.address.parse().expect(
         &format!(

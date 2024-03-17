@@ -27,6 +27,13 @@ pub async fn app(database: DatabaseConnection, arguments: Arguments) -> axum::Ro
 }
 
 pub async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
+    #[cfg(feature = "test")]
+    if arguments.skip_oidc {
+        return axum::Router::new()
+            .merge(required_auth())
+            .merge(optional_auth());
+    }
+
     let session_layer = oidc::session_layer();
 
     let oidc_login_service = tower::ServiceBuilder::new()

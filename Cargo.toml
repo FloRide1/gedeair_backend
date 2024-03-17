@@ -45,3 +45,10 @@ utoipa-swagger-ui = { version = "6.0.0", features = ["axum"] }
 # CLI + Env + Config file
 clap = { version = "4.5.1", features = ["derive", "env"] }
 dotenvy = { version = "0.15.7", features = ["clap"] }
+
+[features]
+test = ["sea-orm/sqlx-sqlite", "service/mock"]
+
+[[test]]
+name = "misc_tests"
+required-features = ["test"]

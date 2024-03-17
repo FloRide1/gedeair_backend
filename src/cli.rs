@@ -1,7 +1,7 @@
 use clap::{command, Parser};
 
 /// The backend of an RPG system
-#[derive(Parser, Debug, Default)]
+#[derive(Parser, Debug, Default, Clone)]
 #[command(version, about, long_about = None)]
 pub struct Arguments {
     /// The address for hosting the backend in format: "IP:PORT" (IP 0.0.0.0 means broadcast, 127.0.0.1 means local)

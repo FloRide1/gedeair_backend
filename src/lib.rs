@@ -10,14 +10,20 @@ use axum_oidc::{error::MiddlewareError, EmptyAdditionalClaims};
 use cli::Arguments;
 use oidc::login;
 use openapi::openapi;
+use sea_orm::DatabaseConnection;
 use state::AppState;
 
+pub async fn app(database: DatabaseConnection, arguments: Arguments) -> axum::Router {
+    let state = AppState {
+        pool: database.clone(),
+        arguments: arguments.clone(),
+    };
 
-pub async fn app(arguments: &Arguments) -> axum::Router {
     axum::Router::new()
         .merge(openapi())
-        .merge(secured_route(arguments).await)
+        .merge(secured_route(&arguments).await)
         .route("/status", get(get_status))
+        .with_state(state)
 }
 
 pub async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {

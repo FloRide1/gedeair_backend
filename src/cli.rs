@@ -60,4 +60,10 @@ pub struct Arguments {
     /// Example: 123456
     #[arg(env, long)]
     pub openid_client_secret: String,
+
+    #[cfg(feature = "test")]
+    /// This argument should not be used by user, it serve only for testing purpose, please if you
+    /// ever see this, do not use it.
+    #[arg(skip)]
+    pub skip_oidc: bool,
 }

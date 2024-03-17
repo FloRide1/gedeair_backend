@@ -9,6 +9,8 @@ use tower_sessions::{
     Expiry, MemoryStore, SessionManagerLayer,
 };
 
+use crate::cli::Arguments;
+
 pub fn session_layer() -> SessionManagerLayer<MemoryStore> {
     let session_store = MemoryStore::default();
     SessionManagerLayer::new(session_store)
@@ -32,6 +34,7 @@ pub struct User {
 #[async_trait]
 impl<S> FromRequestParts<S> for User
 where
+    Arguments: axum::extract::FromRef<S>,
     S: Send + Sync,
 {
     type Rejection = <OidcClaims<EmptyAdditionalClaims> as FromRequestParts<
@@ -43,13 +46,19 @@ where
         state: &S,
     ) -> Result<Self, Self::Rejection> {
         #[cfg(feature = "test")]
-        // TODO: Add if
-        return Ok(User {
-            id: "1",
-            username: "test_username",
-            name: "test name",
-            email: "test@test.com",
-        });
+        {
+            use axum::extract::FromRef;
+
+            let arguments = Arguments::from_ref(state);
+            if arguments.skip_oidc {
+                return Ok(User {
+                    id: "1".to_owned(),
+                    username: "test_username".to_owned(),
+                    name: "test name".to_owned(),
+                    email: "test@test.com".to_owned(),
+                });
+            }
+        }
 
         let extractor =
             OidcClaims::<EmptyAdditionalClaims>::from_request_parts(parts, state).await?;

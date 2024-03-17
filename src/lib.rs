@@ -1,6 +1,7 @@
 pub mod cli;
 pub mod oidc;
 pub mod openapi;
+pub mod state;
 
 use std::str::FromStr;
 
@@ -9,6 +10,8 @@ use axum_oidc::{error::MiddlewareError, EmptyAdditionalClaims};
 use cli::Arguments;
 use oidc::login;
 use openapi::openapi;
+use state::AppState;
+
 
 pub async fn app(arguments: &Arguments) -> axum::Router {
     axum::Router::new()
@@ -17,7 +20,7 @@ pub async fn app(arguments: &Arguments) -> axum::Router {
         .route("/status", get(get_status))
 }
 
-pub async fn secured_route(arguments: &Arguments) -> axum::Router {
+pub async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
     let session_layer = oidc::session_layer();
 
     let oidc_login_service = tower::ServiceBuilder::new()
@@ -53,11 +56,11 @@ pub async fn secured_route(arguments: &Arguments) -> axum::Router {
         .layer(session_layer)
 }
 
-pub fn required_auth() -> axum::Router {
+pub fn required_auth() -> axum::Router<AppState> {
     axum::Router::new().route("/login", get(login))
 }
 
-pub fn optional_auth() -> axum::Router {
+pub fn optional_auth() -> axum::Router<AppState> {
     axum::Router::new()
 }
 

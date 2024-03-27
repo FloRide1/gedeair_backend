@@ -1,3 +1,6 @@
+mod prepare;
+
+use crate::prepare::prepare_mock_db;
 use axum::{body::Body, extract::Request, http::StatusCode};
 use gedeair_backend::{app, cli::Arguments};
 use http_body_util::BodyExt;
@@ -6,7 +9,12 @@ use tower::util::ServiceExt;
 
 #[tokio::test]
 async fn basic_status_test() {
-    let app = app();
+    let mut arguments = Arguments::default();
+    arguments.skip_oidc = true;
+
+    let db = prepare_mock_db().await;
+
+    let app = app(db, arguments).await;
 
     let response = app
         .oneshot(
@@ -29,7 +37,12 @@ async fn basic_status_test() {
 
 #[tokio::test]
 async fn basic_swagger_test() {
-    let app = app();
+    let mut arguments = Arguments::default();
+    arguments.skip_oidc = true;
+
+    let db = prepare_mock_db().await;
+
+    let app = app(db, arguments).await;
 
     let response = app
         .clone()

@@ -7,6 +7,7 @@ use crate::state::AppState;
 #[openapi(
     paths(
         crate::get_status,
+        crate::oidc::login,
     ),
     tags(
         (name = "gedeair_backend", description = "Todo items management API")

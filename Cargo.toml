@@ -50,5 +50,9 @@ dotenvy = { version = "0.15.7", features = ["clap"] }
 test = ["sea-orm/sqlx-sqlite", "service/mock"]
 
 [[test]]
+name = "base_tests"
+required-features = ["test"]
+
+[[test]]
 name = "misc_tests"
 required-features = ["test"]

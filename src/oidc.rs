@@ -25,7 +25,7 @@ pub fn session_layer() -> SessionManagerLayer<MemoryStore> {
         path = "/login",
         responses(
             (status = 307, description = "You're not logged in and you should be"),
-            (status = 302, description = "You're logged in, now go back to Application_base_url")
+            (status = 303, description = "You're logged in, now go back to Application_base_url")
         )
     )]
 pub async fn login(_user: User, State(arguments): State<Arguments>) -> impl IntoResponse {

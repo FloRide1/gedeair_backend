@@ -2,7 +2,7 @@ use clap::Parser;
 use migration::MigratorTrait;
 use std::{net::SocketAddr, time::Duration};
 
-use gedeair_backend::{app, cli::Arguments};
+use gedeair_backend::{app, Arguments};
 use tracing_subscriber::prelude::*;
 
 use tower_http::trace::TraceLayer;

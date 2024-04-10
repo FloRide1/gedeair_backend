@@ -1,14 +1,14 @@
-pub mod cli;
-pub mod oidc;
-pub mod openapi;
-pub mod state;
+mod cli;
+mod oidc;
+mod openapi;
+mod route;
+mod state;
 
 use std::str::FromStr;
 
 use axum::{error_handling::HandleErrorLayer, response::IntoResponse, routing::get};
 use axum_oidc::{error::MiddlewareError, EmptyAdditionalClaims};
-use cli::Arguments;
-use oidc::login;
+pub use cli::Arguments;
 use openapi::openapi;
 use sea_orm::DatabaseConnection;
 use state::AppState;
@@ -62,19 +62,11 @@ pub async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
         );
 
     axum::Router::new()
-        .merge(required_auth())
+        .merge(route::required_auth())
         .layer(oidc_login_service)
-        .merge(optional_auth())
+        .merge(route::optional_auth())
         .layer(oidc_auth_service)
         .layer(session_layer)
-}
-
-pub fn required_auth() -> axum::Router<AppState> {
-    axum::Router::new().route("/login", get(login))
-}
-
-pub fn optional_auth() -> axum::Router<AppState> {
-    axum::Router::new()
 }
 
 #[utoipa::path(

@@ -1,7 +1,5 @@
 use axum::async_trait;
 use axum::extract::FromRequestParts;
-use axum::extract::State;
-use axum::response::IntoResponse;
 use axum_oidc::error::ExtractorError;
 use axum_oidc::EmptyAdditionalClaims;
 use axum_oidc::OidcClaims;
@@ -18,18 +16,6 @@ pub fn session_layer() -> SessionManagerLayer<MemoryStore> {
         .with_secure(false)
         .with_same_site(SameSite::Lax)
         .with_expiry(Expiry::OnInactivity(Duration::seconds(120)))
-}
-
-#[utoipa::path(
-        get,
-        path = "/login",
-        responses(
-            (status = 307, description = "You're not logged in and you should be"),
-            (status = 303, description = "You're logged in, now go back to Application_base_url")
-        )
-    )]
-pub async fn login(_user: User, State(arguments): State<Arguments>) -> impl IntoResponse {
-    axum::response::Redirect::to(&arguments.application_base_url)
 }
 
 #[derive(Debug)]

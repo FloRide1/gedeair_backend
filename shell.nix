@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> { } }:
 
 pkgs.mkShell {
-  nativeBuildInputs = with pkgs; [ pkg-config clang lld ];
+  nativeBuildInputs = with pkgs; [ pkg-config ];
   buildInputs = with pkgs; [
     rustc
     cargo

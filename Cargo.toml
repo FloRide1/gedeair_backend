@@ -18,14 +18,16 @@ features = ["precommit-hook", "run-cargo-check", "run-cargo-clippy", "run-cargo-
 
 [dev-dependencies]
 http-body-util = { version = "0.1.0" }
-serde_json = { version = "1.0.114" }
 
 [dependencies]
+# Rest API
 axum = { version = "0.7.4" }
-tokio = { version = "1.36.0", features = ["full"] }
 axum-oidc = { version = "0.3.0" }
 tower = { version = "0.4.13" }
 tower-sessions = { version = "0.11.0" }
+
+# Runtime
+tokio = { version = "1.36.0", features = ["full"] }
 
 # Database
 sea-orm = { version = "0.12.14", features = ["sqlx-postgres", "runtime-tokio-rustls"] }
@@ -45,6 +47,9 @@ utoipa-swagger-ui = { version = "6.0.0", features = ["axum"] }
 # CLI + Env + Config file
 clap = { version = "4.5.1", features = ["derive", "env"] }
 dotenvy = { version = "0.15.7", features = ["clap"] }
+
+# Serialisation + Deserialisation
+serde_json = { version = "1.0.114" }
 
 [features]
 test = ["sea-orm/sqlx-sqlite", "service/mock"]

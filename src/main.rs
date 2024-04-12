@@ -19,14 +19,14 @@ async fn main() {
         let filter = tracing_subscriber::filter::Targets::new()
             .with_target("tower_http::trace::on_response", tracing::Level::TRACE)
             .with_target("tower_http::trace::on_request", tracing::Level::TRACE)
-            .with_target("tower_http::trace::make_span", tracing::Level::DEBUG)
-            .with_default(tracing::Level::INFO);
+            .with_target("tower_http::trace::make_span", tracing::Level::DEBUG);
 
         let tracing_layer = tracing_subscriber::fmt::layer();
 
         tracing_subscriber::registry()
             .with(tracing_layer)
             .with(filter)
+            .with(tracing_subscriber::EnvFilter::from_default_env())
             .init();
     }
 

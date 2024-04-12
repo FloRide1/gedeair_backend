@@ -50,6 +50,7 @@ dotenvy = { version = "0.15.7", features = ["clap"] }
 
 # Serialisation + Deserialisation
 serde_json = { version = "1.0.114" }
+serde = { version = "1.0.197", features = ["derive"] }
 
 [features]
 test = ["sea-orm/sqlx-sqlite", "service/mock"]

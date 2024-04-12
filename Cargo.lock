@@ -1080,6 +1080,7 @@ dependencies = [
  "http-body-util",
  "migration",
  "sea-orm",
+ "serde",
  "serde_json",
  "service",
  "tokio",

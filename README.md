@@ -25,7 +25,7 @@ POSTGRES_DB="my_database_name"
 
 ```sh
 # Dependencies (Optional)
-nix-shell
+nix develop
 
 cargo run --release
 # or if you want to build
@@ -54,11 +54,11 @@ docker run <your-image-name>
 You want to add more features, edit one or submit a fix ? Great ! Here is some command that can help you
 
 > [!NOTE]
-> I provide `shell.nix` for [Nix](https://nixos.wiki/wiki/Nix_package_manager), don't hesitate.
+> I provide `flake.nix` for [Nix](https://nixos.wiki/wiki/Nix_package_manager), don't hesitate.
 
 ```
 # Dependencies (Optional)
-nix-shell
+nix develop
 
 # Add the exemple as the current .env file (You can edit it)
 cp .env.default .env

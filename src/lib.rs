@@ -30,8 +30,8 @@ pub async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
     #[cfg(feature = "test")]
     if arguments.skip_oidc {
         return axum::Router::new()
-            .merge(required_auth())
-            .merge(optional_auth());
+            .merge(route::required_auth())
+            .merge(route::optional_auth());
     }
 
     let session_layer = oidc::session_layer();

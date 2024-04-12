@@ -2,7 +2,7 @@ mod prepare;
 
 use crate::prepare::prepare_mock_db;
 use axum::{body::Body, extract::Request, http::StatusCode, response::IntoResponse};
-use gedeair_backend::{app, cli::Arguments};
+use gedeair_backend::{app, Arguments};
 use tower::util::ServiceExt;
 
 #[tokio::test]

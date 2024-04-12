@@ -2,7 +2,7 @@ mod prepare;
 
 use crate::prepare::prepare_mock_db;
 use axum::{body::Body, extract::Request, http::StatusCode};
-use gedeair_backend::{app, cli::Arguments};
+use gedeair_backend::{app, Arguments};
 use http_body_util::BodyExt;
 use serde_json::{json, Value};
 use tower::util::ServiceExt;

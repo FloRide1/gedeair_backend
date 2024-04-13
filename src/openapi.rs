@@ -3,11 +3,16 @@ use utoipa_swagger_ui::SwaggerUi;
 
 use crate::state::AppState;
 
+use crate::__path_get_status;
+use crate::route::__path_login;
+use crate::route::__path_me;
+
 #[derive(OpenApi)]
 #[openapi(
     paths(
-        crate::get_status,
-        crate::route::login
+        get_status,
+        login,
+        me
     ),
     tags(
         (name = "gedeair_backend", description = "Todo items management API")

@@ -1,6 +1,6 @@
-use axum::response::IntoResponse;
+use axum::{http::StatusCode, response::IntoResponse, Json};
 
-use crate::oidc::User;
+use crate::{artifact::UserResponse, oidc::User};
 
 #[utoipa::path(
         get,
@@ -10,4 +10,11 @@ use crate::oidc::User;
             (status = 404, description = "The User is not logged in")
         )
     )]
-pub async fn me(_user: Option<User>) -> impl IntoResponse {}
+pub async fn me(
+    user: Option<User>,
+) -> Result<(StatusCode, Json<UserResponse>), (StatusCode, impl IntoResponse)> {
+    match user {
+        Some(user) => Ok((StatusCode::OK, Json(user.into()))),
+        None => Err((StatusCode::NOT_FOUND, "You're not logged in")),
+    }
+}

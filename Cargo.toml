@@ -52,6 +52,9 @@ dotenvy = { version = "0.15.7", features = ["clap"] }
 serde_json = { version = "1.0.114" }
 serde = { version = "1.0.197", features = ["derive"] }
 
+# Static Build
+openssl = { version = "0.10.64", features = ["vendored"] }
+
 [features]
 test = ["sea-orm/sqlx-sqlite", "service/mock"]
 

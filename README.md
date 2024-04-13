@@ -10,15 +10,25 @@ This project is a backend for an RPG (Or in french JDR, thus the name) system.
 
 ### Manual
 
-You need to provide a [PostgreSQL Database](https://www.postgresql.org/) connection, using either **C**ommand **L**ine **I**nterface arguments, Environment Variable or load them through an .env file, every argument can be seen with the --help (-h short version) arguments,
-Some of the connection argument have default values, but you can override them with no worries. Here is an example of an .env file with all connection values filled:
+You need to provide a [PostgreSQL Database](https://www.postgresql.org/) connection, using either **C**ommand **L**ine **I**nterface arguments, Environment Variable or load them through an `.env` file, every argument can be seen with the `--help` (`-h` short version) arguments,
+Some of the connection argument have default values, but you can override them with no worries. Here is an example of an `.env`file with all connection values filled:
 
 ```env
-POSTGRES_USER="postgres"
-POSTGRES_PASSWORD="postgres"
+# DATABASE
+POSTGRES_USER="gedeair_db_user"
+POSTGRES_PASSWORD="my_secret_password"
 POSTGRES_PORT=5432
-POSTGRES_HOST="localhost"
-POSTGRES_DB="my_database_name"
+POSTGRES_HOST="<gedeair_database_hostname>"
+
+# Optional since, POSTGRES_* values are set
+DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_PORT}/${POSTGRES_DB}"
+
+# OPENID
+FRONTEND_BASE_URL="https://my_website_frontend_url.com"
+BACKEND_BASE_URL="https://my_website_backend_url.com/with_its_endpoint"
+OPENID_ISSUER="" # For Keycloak: "https://<my_keycloak_server>/realms/<my_realm>"
+OPENID_CLIENT_ID="my_gedeair_client_id"
+OPENID_CLIENT_SECRET=""
 ```
 
 #### Run it
@@ -35,7 +45,7 @@ cargo build --release
 
 ### Docker
 
-```
+```sh
 docker build -t <your-image-name> .
 
 docker run <your-image-name>

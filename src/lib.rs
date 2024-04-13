@@ -27,7 +27,7 @@ pub async fn app(database: DatabaseConnection, arguments: Arguments) -> axum::Ro
         .with_state(state)
 }
 
-pub async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
+async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
     #[cfg(feature = "test")]
     if arguments.skip_oidc {
         return axum::Router::new()
@@ -45,6 +45,9 @@ pub async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
 
     let application_base_url = axum::http::Uri::from_str(&arguments.application_base_url)
         .expect("Application Base URL should be a valid URL");
+    let issuer = arguments.openid_issuer.to_owned();
+    let client_id = arguments.openid_client_id.to_owned();
+    let client_secret = arguments.openid_client_secret.to_owned();
 
     let oidc_auth_service = tower::ServiceBuilder::new()
         .layer(HandleErrorLayer::new(|e: MiddlewareError| async {
@@ -53,9 +56,9 @@ pub async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
         .layer(
             axum_oidc::OidcAuthLayer::<EmptyAdditionalClaims>::discover_client(
                 application_base_url,
-                arguments.openid_issuer.to_owned(),
-                arguments.openid_client_id.to_owned(),
-                Some(arguments.openid_client_secret.to_owned()),
+                issuer,
+                client_id,
+                Some(client_secret),
                 vec![],
             )
             .await

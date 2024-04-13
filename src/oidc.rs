@@ -72,12 +72,12 @@ where
             .email()
             .ok_or(ExtractorError::Unauthorized)?
             .to_string();
-
-        Ok(User {
+        let user = User {
             id,
             username,
             name,
             email,
-        })
+        };
+        Ok(user)
     }
 }

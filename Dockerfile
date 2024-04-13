@@ -1,5 +1,6 @@
-FROM docker.io/blackdex/rust-musl:x86_64-musl as chef
+FROM clux/muslrust:stable AS chef
 
+USER root
 RUN cargo install cargo-chef
 WORKDIR /gedeair_backend
 

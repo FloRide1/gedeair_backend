@@ -23,7 +23,7 @@ pub async fn login(
     _user: crate::oidc::User,
     State(arguments): State<crate::cli::Arguments>,
 ) -> impl IntoResponse {
-    axum::response::Redirect::to(&arguments.application_base_url)
+    axum::response::Redirect::to(&arguments.frontend_base_url)
 }
 
 #[utoipa::path(

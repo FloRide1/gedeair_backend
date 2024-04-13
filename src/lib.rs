@@ -43,7 +43,7 @@ async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
         }))
         .layer(axum_oidc::OidcLoginLayer::<EmptyAdditionalClaims>::new());
 
-    let application_base_url = axum::http::Uri::from_str(&arguments.application_base_url)
+    let application_base_url = axum::http::Uri::from_str(&arguments.backend_base_url)
         .expect("Application Base URL should be a valid URL");
     let issuer = arguments.openid_issuer.to_owned();
     let client_id = arguments.openid_client_id.to_owned();

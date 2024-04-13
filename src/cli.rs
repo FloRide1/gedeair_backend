@@ -41,10 +41,15 @@ pub struct Arguments {
     #[arg(env, long)]
     pub database_url: Option<String>,
 
-    /// The base URL of you're Application (needed for OpenID).
+    /// The Frontend URL of you're  Application.
     /// Example: https://app.example.com
     #[arg(env, long)]
-    pub application_base_url: String,
+    pub frontend_base_url: String,
+
+    /// The Backend URL of you're Backend Application (this application) (needed for OpenID).
+    /// Example: https://app.example.com/api
+    #[arg(env, long)]
+    pub backend_base_url: String,
 
     /// The OpenID Issuer URL.
     /// Example: https://auth.example.com/realms/master

@@ -15,13 +15,14 @@ Some of the connection argument have default values, but you can override them w
 
 ```env
 # DATABASE
+# Either like this
 POSTGRES_USER="gedeair_db_user"
 POSTGRES_PASSWORD="my_secret_password"
 POSTGRES_PORT=5432
 POSTGRES_HOST="<gedeair_database_hostname>"
 
-# Optional since, POSTGRES_* values are set
-DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_PORT}/${POSTGRES_DB}"
+# Or like this (/!\ This one take priority)
+DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
 
 # OPENID
 FRONTEND_BASE_URL="https://my_website_frontend_url.com"

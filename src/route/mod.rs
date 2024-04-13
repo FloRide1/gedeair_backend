@@ -25,3 +25,14 @@ pub async fn login(
 ) -> impl IntoResponse {
     axum::response::Redirect::to(&arguments.application_base_url)
 }
+
+#[utoipa::path(
+        get,
+        path = "/status",
+        responses(
+            (status = 200, description = "API is up and functionnal", body = String)
+        )
+    )]
+pub async fn get_status() -> &'static str {
+    "UP"
+}

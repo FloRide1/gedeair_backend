@@ -23,7 +23,7 @@ pub async fn app(database: DatabaseConnection, arguments: Arguments) -> axum::Ro
     axum::Router::new()
         .merge(openapi())
         .merge(secured_route(&arguments).await)
-        .route("/status", get(get_status))
+        .route("/status", get(route::get_status))
         .with_state(state)
 }
 
@@ -68,15 +68,4 @@ pub async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
         .merge(route::optional_auth())
         .layer(oidc_auth_service)
         .layer(session_layer)
-}
-
-#[utoipa::path(
-        get,
-        path = "/status",
-        responses(
-            (status = 200, description = "API is up and functionnal", body = String)
-        )
-    )]
-pub async fn get_status() -> &'static str {
-    "UP"
 }

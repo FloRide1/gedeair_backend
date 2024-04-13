@@ -1,5 +1,5 @@
-use self::user::me;
 use axum::{extract::State, response::IntoResponse, routing::get};
+pub use user::__path_me;
 
 mod user;
 
@@ -8,7 +8,7 @@ pub fn required_auth() -> axum::Router<crate::state::AppState> {
 }
 
 pub fn optional_auth() -> axum::Router<crate::state::AppState> {
-    axum::Router::new().route("/user", get(me))
+    axum::Router::new().route("/user", get(user::me))
 }
 
 #[utoipa::path(

@@ -58,7 +58,7 @@ async fn secured_route(arguments: &Arguments) -> axum::Router<AppState> {
                 application_base_url,
                 issuer,
                 client_id,
-                Some(client_secret),
+                client_secret,
                 vec![],
             )
             .await

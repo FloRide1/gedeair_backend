@@ -64,7 +64,7 @@ pub struct Arguments {
     /// The OpenID Client Secret.
     /// Example: 123456
     #[arg(env, long)]
-    pub openid_client_secret: String,
+    pub openid_client_secret: Option<String>,
 
     #[cfg(feature = "test")]
     /// This argument should not be used by user, it serve only for testing purpose, please if you

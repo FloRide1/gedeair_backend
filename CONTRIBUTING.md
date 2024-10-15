@@ -34,7 +34,7 @@ Ensure you have a running instance of:
 You can use the example Docker Compose or any other preferred method to start these services. 
 Example:
 ```sh
-docker-compose up -d
+docker-compose -f dev-docker-compose.yml up -d
 ```
 
 ### Run the project:

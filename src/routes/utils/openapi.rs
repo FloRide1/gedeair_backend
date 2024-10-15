@@ -38,9 +38,9 @@ struct ApiDoc;
 ///
 /// This function sets up the routes for serving OpenAPI documentation.
 /// It configures the Swagger UI to be available at: `/swagger-ui`
-pub fn openapi() -> axum::Router<crate::state::AppState> {
+pub fn openapi(path: &str) -> axum::Router<crate::state::AppState> {
     axum::Router::new().merge(
-        utoipa_swagger_ui::SwaggerUi::new("/swagger-ui")
+        utoipa_swagger_ui::SwaggerUi::new(format!("{path}/swagger-ui"))
             .url("/api-docs/openapi.json", ApiDoc::openapi()),
     )
 }

@@ -1,10 +1,10 @@
 [package]
 name = "gedeair_backend"
-version = "0.0.1"
+version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = [".", "service", "entity", "migration"]
+members = [".", "migration", "entity", "service"]
 
 # Enable high optimizations for dependencies:
 [profile.dev.package."*"]
@@ -18,50 +18,62 @@ features = ["precommit-hook", "run-cargo-check", "run-cargo-clippy", "run-cargo-
 
 [dev-dependencies]
 http-body-util = { version = "0.1.0" }
+tower = { version = "0.5.1", features = ["util"] }
+testcontainers = "0.22.0"
+testcontainers-modules = { version = "0.10.0", features = ["postgres", "minio"] }
+regex = "1.10.6"
+axum-test = "16.2.0"
+reqwest = { version = "0.12.7", features = ["cookies"] }
 
 [dependencies]
-# Rest API
-axum = { version = "0.7.4" }
-axum-oidc = { version = "0.3.0" }
-tower = { version = "0.4.13" }
-tower-sessions = { version = "0.11.0" }
+## Rest API
+axum = { version = "0.7.6", features = ["multipart"] }
+tower = "0.5.1"
 
 # Runtime
-tokio = { version = "1.36.0", features = ["full"] }
+tokio = { version = "1.40.0", features = ["full"] }
+tokio-util = { version = "0.7.12", features = ["io"] }
+futures = "0.3.30"
 
 # Database
-sea-orm = { version = "0.12.14", features = ["sqlx-postgres", "runtime-tokio-rustls"] }
+sea-orm = { version = "1.0.1", features = ["sqlx-postgres", "runtime-tokio-rustls", "with-chrono"] }
 migration = { path = "migration" }
 entity = { path = "entity" }
 service = { path = "service" }
 
-# Trace + Log
-tower-http = { version = "0.5.2", features = ["trace"] }
-tracing = { version = "0.1.40" }
-tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
-
-# OpenAPI
-utoipa = { version = "4.2.0", features = ["axum_extras"] }
-utoipa-swagger-ui = { version = "6.0.0", features = ["axum"] }
-
-# CLI + Env + Config file
-clap = { version = "4.5.1", features = ["derive", "env"] }
+# CLI + Env + Config
+clap = { version = "4.5.17", features = ["derive", "env"] }
 dotenvy = { version = "0.15.7", features = ["clap"] }
 
-# Serialisation + Deserialisation
-serde_json = { version = "1.0.114" }
-serde = { version = "1.0.197", features = ["derive"] }
+# Trace + Log
+tower-http = { version = "0.5.2", features = ["trace", "cors"] }
+tracing = { version = "0.1.40" }
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+log = "0.4.22"
 
-# Static Build
-openssl = { version = "0.10.64", features = ["vendored"] }
+# OpenAPI
+utoipa = { version = "4.2.0", features = ["axum_extras", "uuid", "chrono", "time", "decimal"] }
+utoipa-swagger-ui = { version = "6.0.0", features = ["axum"] }
+
+# Auth + OIDC
+axum-oidc = "0.5.0"
+tower-sessions = "0.13.0"
+
+# Serialisation + Deserialisation 
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = { version = "1.0.114" }
+
+# Cache (Redis/Valkey)
+fred = { version = "9.2.1", optional = true, features = ["partial-tracing", "serde-json"] }
+tower-sessions-redis-store = { version = "0.14.0", optional = true }
+
+# S3 / Minio
+rust-s3 = "0.35.1"
+
+# Utils
+uuid = { version = "1.10.0", features = ["v4", "fast-rng", "serde"] }
+chrono = "0.4.38"
 
 [features]
-test = ["sea-orm/sqlx-sqlite", "service/mock"]
-
-[[test]]
-name = "base_tests"
-required-features = ["test"]
-
-[[test]]
-name = "misc_tests"
-required-features = ["test"]
+default = ["cache"]
+cache = ["dep:fred", "dep:tower-sessions-redis-store", "service/cache" ]

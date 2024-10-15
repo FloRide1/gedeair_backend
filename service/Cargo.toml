@@ -10,21 +10,23 @@ path = "src/lib.rs"
 
 [dependencies]
 entity = { path = "../entity" }
+fred = { version = "9.2.1", optional = true, features = ["serde-json"] }
+serde_json = { version = "1.0.114" }
+tokio = { version = "1.40.0", features = ["full"], optional = true }
+chrono = "0.4.38"
+uuid = { version = "1.10.0", features = ["v4", "fast-rng", "serde"] }
+log = "0.4.22"
 
 [dependencies.sea-orm]
-version = "0.12.14"
+version = "1.0.1"
 features = [
     "debug-print",
     "runtime-tokio-native-tls",
     "sqlx-postgres",
+    "with-json",
+    "with-chrono",
+    "with-uuid"
 ]
 
-[dev-dependencies]
-tokio = { version = "1.36.0", features = ["macros", "rt"] }
-
 [features]
-mock = ["sea-orm/sqlx-sqlite"]
-
-[[test]]
-name = "game_test"
-required-features = ["mock"]
+cache = ["dep:fred", "dep:tokio"]

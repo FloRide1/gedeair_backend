@@ -1,15 +1,18 @@
 {
-  description = "A Nix-flake-based Rust development environment";
 
   inputs = {
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
     };
   };
 
-  outputs = { self, nixpkgs, rust-overlay }:
+  outputs = { self, nixpkgs, flake-utils, rust-overlay }:
     let
       overlays = [
         rust-overlay.overlays.default
@@ -24,6 +27,19 @@
         nixpkgs.lib.genAttrs supportedSystems
         (system: f { pkgs = import nixpkgs { inherit overlays system; }; });
     in {
+      packages = forEachSupportedSystem ({ pkgs }: {
+        default = pkgs.rustPlatform.buildRustPackage {
+          pname = "gedeair_backend";
+          version = "0.0.1";
+          src = ./.;
+          cargoLock = {
+            lockFile = ./Cargo.lock;
+          };
+
+          nativeBuildInputs = [ pkgs.pkg-config ];
+          PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+        };
+      });
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {
           packages = with pkgs; [
@@ -33,7 +49,10 @@
             cargo-deny
             cargo-edit
             cargo-watch
+            cargo-nextest
             rust-analyzer
+            lldb
+            sea-orm-cli
           ];
         };
       });

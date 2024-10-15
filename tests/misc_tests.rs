@@ -87,17 +87,13 @@ async fn basic_swagger_test() {
         .await
         .unwrap();
 
-    if cfg!(debug_assertions) {
-        assert_eq!(response.status(), StatusCode::OK);
+    assert_eq!(response.status(), StatusCode::OK);
 
-        let body = response.into_body().collect().await.unwrap().to_bytes();
-        let body: Value = serde_json::from_slice(&body).unwrap();
+    let body = response.into_body().collect().await.unwrap().to_bytes();
+    let body: Value = serde_json::from_slice(&body).unwrap();
 
-        // Simple text for beeing sure that openapi is working, don't forget to bump version
-        assert_eq!(*body.get("openapi").unwrap(), json!("3.0.3"));
-    } else {
-        assert_eq!(response.status(), StatusCode::NOT_FOUND);
-    }
+    // Simple text for beeing sure that openapi is working, don't forget to bump version
+    assert_eq!(*body.get("openapi").unwrap(), json!("3.0.3"));
 }
 
 #[tokio::test]

@@ -1,47 +1,32 @@
 # Gedeair Backend
+> By Florian 'FloRide' Reimat
 
-> By Florian "FloRide" Reimat
+# About
 
-## About
-
-This project is a backend for an RPG (Or in french JDR, thus the name) system.
+Gedeair Backend is a RESTful API designed to serve as the backend for a tabletop role-playing game (RPG) system, known in French as a "Jeu de Rôle" (JDR), which is where the name Gedeair originates. The system provides essential features for managing game mechanics, player interactions, character data, and more, allowing Game Masters and players to focus on the experience without worrying about technicalities. Built with performance and scalability in mind, Gedeair Backend is a solution for both small games and large campaigns.
 
 ## Usage
-
 ### Manual
-
-You need to provide a [PostgreSQL Database](https://www.postgresql.org/) connection, using either **C**ommand **L**ine **I**nterface arguments, Environment Variable or load them through an `.env` file, every argument can be seen with the `--help` (`-h` short version) arguments,
-Some of the connection argument have default values, but you can override them with no worries. Here is an example of an `.env`file with all connection values filled:
-
-```env
-# DATABASE
-# Either like this
-POSTGRES_USER="gedeair_db_user"
-POSTGRES_PASSWORD="my_secret_password"
-POSTGRES_PORT=5432
-POSTGRES_HOST="<gedeair_database_hostname>"
-
-# Or like this (/!\ This one take priority)
-DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
-
-# OPENID
-FRONTEND_BASE_URL="https://my_website_frontend_url.com"
-BACKEND_BASE_URL="https://my_website_backend_url.com/with_its_endpoint"
-OPENID_ISSUER="" # For Keycloak: "https://<my_keycloak_server>/realms/<my_realm>"
-OPENID_CLIENT_ID="my_gedeair_client_id"
-OPENID_CLIENT_SECRET=""
-```
-
-#### Run it
-
 ```sh
 # Dependencies (Optional)
 nix develop
 
+# Setup example env
+mv .env.prod.example .env
+
 cargo run --release
-# or if you want to build
+# or if you want to build the exec
 cargo build --release
-./target/release/gedeair_backend
+
+# You can find the exec in the <project_dir>/target/release/gedeair_backend
+```
+
+### Nix
+```
+# Setup example env
+mv .env.prod.example .env
+
+nix build
 ```
 
 ### Docker
@@ -57,5 +42,5 @@ docker run <your-image-name>
 > | tag | Explanation |
 > |----------|-----------------------------------------|
 > | master | The master branch of github (not safe) |
-> | latest | The latest safest version (recommanded) |
+> | latest | The latest safest version (recommended) |
 > | vX.X.X | The image version |

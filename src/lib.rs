@@ -117,40 +117,34 @@ pub async fn app(arguments: Arguments) -> axum::Router {
 
     #[cfg(feature = "cache")]
     if let Some(pool) = state.cache_pool.clone() {
-        return axum::Router::new().nest(
-            &path,
-            axum::Router::new()
-                .merge(auth_required_routes(&path))
-                .layer(login_service)
-                .merge(auth_optional_routes(&path))
-                .layer(auth_service)
-                .layer(oidc::cache_session_layer(pool))
-                .merge(routes::utils::openapi::openapi(&path))
-                .route(
-                    &format!("{path}/status"),
-                    get(routes::utils::status::get_status),
-                )
-                .layer(cors_layer)
-                .with_state(state),
-        );
-    }
-
-    axum::Router::new().nest(
-        &path,
-        axum::Router::new()
+        return axum::Router::new()
             .merge(auth_required_routes(&path))
             .layer(login_service)
             .merge(auth_optional_routes(&path))
             .layer(auth_service)
-            .layer(oidc::memory_session_layer())
+            .layer(oidc::cache_session_layer(pool))
             .merge(routes::utils::openapi::openapi(&path))
             .route(
                 &format!("{path}/status"),
                 get(routes::utils::status::get_status),
             )
             .layer(cors_layer)
-            .with_state(state),
-    )
+            .with_state(state);
+    }
+
+    axum::Router::new()
+        .merge(auth_required_routes(&path))
+        .layer(login_service)
+        .merge(auth_optional_routes(&path))
+        .layer(auth_service)
+        .layer(oidc::memory_session_layer())
+        .merge(routes::utils::openapi::openapi(&path))
+        .route(
+            &format!("{path}/status"),
+            get(routes::utils::status::get_status),
+        )
+        .layer(cors_layer)
+        .with_state(state)
 }
 
 /// Defines routes that require user authentication.

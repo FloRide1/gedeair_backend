@@ -70,11 +70,7 @@ async fn basic_swagger_test() {
         .await
         .unwrap();
 
-    if cfg!(debug_assertions) {
-        assert_eq!(response.status(), StatusCode::SEE_OTHER);
-    } else {
-        assert_eq!(response.status(), StatusCode::NOT_FOUND);
-    }
+    assert_eq!(response.status(), StatusCode::SEE_OTHER);
 
     let response = app
         .oneshot(

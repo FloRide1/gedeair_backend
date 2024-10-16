@@ -124,9 +124,9 @@ pub async fn app(arguments: Arguments) -> axum::Router {
             .layer(auth_service)
             .layer(oidc::cache_session_layer(pool))
             .merge(routes::utils::openapi::openapi(&path))
-            .route(
-                &format!("{path}/status"),
-                get(routes::utils::status::get_status),
+            .nest(
+                &path,
+                axum::Router::new().route("/status", get(routes::utils::status::get_status)),
             )
             .layer(cors_layer)
             .with_state(state);
@@ -139,9 +139,9 @@ pub async fn app(arguments: Arguments) -> axum::Router {
         .layer(auth_service)
         .layer(oidc::memory_session_layer())
         .merge(routes::utils::openapi::openapi(&path))
-        .route(
-            &format!("{path}/status"),
-            get(routes::utils::status::get_status),
+        .nest(
+            &path,
+            axum::Router::new().route("/status", get(routes::utils::status::get_status)),
         )
         .layer(cors_layer)
         .with_state(state)
